@@ -31,13 +31,7 @@ int main(int argc, char** argv)
 	imshow("Display window1", modifiedImage); // Show our image inside it.
 	waitKey(0); // Wait for a keystroke in the window
 	
-	Mat greyscale = Mat::zeros(modifiedImage.size(), CV_8UC1);
-	for (int y = 0; y < modifiedImage.rows; y++) {
-		for (int x = 0; x < modifiedImage.cols; x++) {
-			greyscale.at<uchar>(y, x) = modifiedImage.at<Vec3b>(y, x)[0] * 0.11 + modifiedImage.at<Vec3b>(y, x)[1] * 0.59 + modifiedImage.at<Vec3b>(y, x)[2] * 0.3;
-		}
-	}
-
+	Mat greyscale = weightedGrayscale(modifiedImage);
 	imshow("Display window1", greyscale); // Show our image inside it.
 	waitKey(0); // Wait for a keystroke in the window
 
@@ -80,6 +74,18 @@ Mat getGreenChannel(Mat inputImage) {
 		for (int x = 0; x < resultImage.cols; x++) {
 			resultImage.at<Vec3b>(y, x)[0] = 0;
 			resultImage.at<Vec3b>(y, x)[2] = 0;
+		}
+	}
+
+	return resultImage;
+}
+
+Mat weightedGrayscale(Mat InputImage) {
+	Mat resultImage = Mat::zeros(InputImage.size(), CV_8UC1);
+
+	for (int y = 0; y < InputImage.rows; y++) {
+		for (int x = 0; x < InputImage.cols; x++) {
+			resultImage.at<uchar>(y, x) = (uchar) (InputImage.at<Vec3b>(y, x)[0] * 0.11 + InputImage.at<Vec3b>(y, x)[1] * 0.59 + InputImage.at<Vec3b>(y, x)[2] * 0.3);
 		}
 	}
 
