@@ -118,7 +118,7 @@ Mat dilate(Mat inputImage, int iterations) {
 		Point(size, size));
 
 	Mat resultImage;
-	dilate(inputImage, resultImage, 7, Point(-1, -1), iterations);
+	dilate(inputImage, resultImage, element, Point(-1, -1), iterations);
 	return resultImage;
 }
 
