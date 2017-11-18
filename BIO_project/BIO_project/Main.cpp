@@ -20,7 +20,7 @@ int main(int argc, char** argv)
 	imshow("Display window", inputImage);
 	waitKey(0);
 
-	Mat modifiedImage = equalizeCLAHE(inputImage, 4, Size(7, 7));
+	Mat modifiedImage = equalizeCLAHE(inputImage, 4, Size(8, 8));
 	imshow("Display window1", modifiedImage);
 	waitKey(0);
 
@@ -85,6 +85,32 @@ int main(int argc, char** argv)
 	return 0;
 }
 
+
+Mat equalizeCLAHE(Mat bgrImage, int clip) {
+	Mat labImage, bgrResult, tmp;
+	cvtColor(bgrImage, labImage, CV_BGR2Lab);
+
+	// Extract the L (Lightness, intensity) channel
+	vector<Mat> labPlanes(3);
+	split(labImage, labPlanes);  // now we have the L image in labPlanes[0]
+
+								 // apply the CLAHE algorithm to the L channel
+	Ptr<CLAHE> clahe = createCLAHE();
+	clahe->setClipLimit(clip);
+	clahe->apply(labPlanes[0], tmp);
+	// Merge the the color planes back into an Lab image
+	tmp.copyTo(labPlanes[0]);
+	merge(labPlanes, labImage);
+
+	// convert back to RGB
+	cvtColor(labImage, bgrResult, CV_Lab2BGR);
+
+	//clear clahe - dont know if needed, but to be sure it is not saved for other usages...
+	clahe->collectGarbage();
+
+	return bgrResult;
+}
+
 Mat equalizeCLAHE(Mat bgrImage, int clip, Size areaGridSize) {
 	Mat labImage, bgrResult, tmp;
 	cvtColor(bgrImage, labImage, CV_BGR2Lab);
@@ -109,6 +135,21 @@ Mat equalizeCLAHE(Mat bgrImage, int clip, Size areaGridSize) {
 	clahe->collectGarbage();
 
 	return bgrResult;
+}
+
+Mat equalizeHist(Mat bgrImage) {
+	Mat hsvImage, rgbImage, hsvImageEqualized, bgrImageEqualized;
+	cvtColor(bgrImage, hsvImage, COLOR_BGR2HSV);
+
+	vector<Mat> hsvChannels;
+	split(hsvImage, hsvChannels);
+	equalizeHist(hsvChannels[2], hsvChannels[2]); //equalize Value
+
+	merge(hsvChannels, hsvImageEqualized);
+	cvtColor(hsvImageEqualized, bgrImageEqualized, COLOR_HSV2BGR);
+
+	return bgrImageEqualized;
+
 }
 
 Mat dilate(Mat inputImage, int iterations) {
