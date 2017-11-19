@@ -1,4 +1,4 @@
-#include "main.h"
+#include "Main.h"
 
 int main(int argc, char** argv)
 {
@@ -24,16 +24,21 @@ int main(int argc, char** argv)
 	//imshow("Display window1", modifiedImage);
 	//waitKey(0);
 
-	Mat modifiedImage = equalizeCLAHE(inputImage, 4, Size(8, 8));
+	int clip = 4;
+	int gridSize = 8;
+	Mat modifiedImage = equalizeCLAHE(inputImage, clip, Size(gridSize, gridSize));
 	imshow("Display window1", modifiedImage);
 	waitKey(0);
 
 	modifiedImage = getGreenChannel(modifiedImage);
-	modifiedImage = modifySaturation(modifiedImage, 1.5, 0);
+	float alpha = 1.5;
+	int beta = 0;
+	modifiedImage = modifySaturation(modifiedImage, alpha, beta);
 	imshow("Display window1", modifiedImage);
 	waitKey(0);
 	
-	Mat greyscale = weightedGrayscale(modifiedImage, 0.7);
+	float weight = 0.7f;
+	Mat greyscale = weightedGrayscale(modifiedImage, weight);
 	//Mat tmp = greyscale.clone();
 	//GaussianBlur(tmp, greyscale, cv::Size(0, 0), 1);
 	//addWeighted(tmp, 1.5, greyscale, -0.5, 10, greyscale);
@@ -89,10 +94,6 @@ int main(int argc, char** argv)
 }
 
 
-/*
-Apply gaussian blur.
-@param filterArea - sizeX a sizeY must be ODD and >0 (greater than zero).
-*/
 Mat gaussianSmoothing(Mat bgrImage, Size filterArea, int sigmaX, int sigmaY) {
 	Mat result;
 	GaussianBlur(bgrImage, result, filterArea, sigmaX, sigmaY);
@@ -240,10 +241,6 @@ Mat weightedGrayscale(Mat inputImage) {
 	return resultImage;
 }
 
-/*
-Convert BGR image to Grayscale image based on GREEN channel values ONLY!
-Green channel can be weighted if needed.
-*/
 Mat weightedGrayscale(Mat inputImage, float weight) {
 	Mat resultImage = Mat::zeros(inputImage.size(), CV_8UC1);
 

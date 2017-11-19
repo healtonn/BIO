@@ -6,7 +6,6 @@
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 #include "opencv2/imgproc.hpp"
-#include "opencv2/imgproc.hpp"
 #include "opencv2/opencv.hpp"
 #include "opencv2/core/core.hpp"
 
@@ -18,6 +17,10 @@ using namespace std;
 
 Mat inputImage;
 
+/*
+Apply gaussian blur.
+@param filterArea - sizeX a sizeY must be ODD and >0 (greater than zero).
+*/
 Mat gaussianSmoothing(Mat bgrImage, Size filterArea, int sigmaX, int sigmaY);
 
 Mat modifySaturation(Mat inputImage, float alpha, int beta);
@@ -30,6 +33,10 @@ Mat getGreenChannel(Mat inputImage);
 
 Mat weightedGrayscale(Mat inputImage);
 
+/*
+Convert BGR image to Grayscale image based on GREEN channel values ONLY!
+Green channel can be weighted if needed.
+*/
 Mat weightedGrayscale(Mat inputImage, float weight);
 
 Mat dilate(Mat inputImage, int iterations);
@@ -37,14 +44,3 @@ Mat dilate(Mat inputImage, int iterations);
 Mat erode(Mat inputImage, int iterations);
 
 Mat equalizeCLAHE(Mat bgrImage, int clip, Size areaGridSize);
-
-/*
-opencv_highgui2413.lib
-opencv_highgui2413d.lib
-opencv_imgproc2413.lib
-opencv_imgproc2413d.lib
-opencv_features2d2413.lib
-opencv_features2d2413d.lib
-opencv_core2413.lib
-opencv_core2413d.lib
-*/
