@@ -33,7 +33,7 @@ int main(int argc, char** argv)
 	imshow("Display window1", modifiedImage);
 	waitKey(0);
 	
-	Mat greyscale = weightedGrayscale(modifiedImage, 1);
+	Mat greyscale = weightedGrayscale(modifiedImage, 0.7);
 	//Mat tmp = greyscale.clone();
 	//GaussianBlur(tmp, greyscale, cv::Size(0, 0), 1);
 	//addWeighted(tmp, 1.5, greyscale, -0.5, 10, greyscale);
@@ -43,7 +43,7 @@ int main(int argc, char** argv)
 	imshow("Display window1", greyscale);
 	waitKey(0);
 
-	//greyscale = erode(greyscale, 2);
+	greyscale = erode(greyscale, 2);
 	//greyscale = dilate(greyscale, 5);
 	imshow("Display window1", greyscale);
 	waitKey(0);
