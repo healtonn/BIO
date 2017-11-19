@@ -16,9 +16,13 @@ int main(int argc, char** argv)
 		return -1;
 	}
 
-	namedWindow("Display window", WINDOW_AUTOSIZE);
-	imshow("Display window", inputImage);
+	namedWindow("Input Image", WINDOW_AUTOSIZE);
+	imshow("Input Image", inputImage);
 	waitKey(0);
+
+	//Mat modifiedImage = gaussianSmoothing(inputImage, Size(25, 25), 3, 3);
+	//imshow("Display window1", modifiedImage);
+	//waitKey(0);
 
 	Mat modifiedImage = equalizeCLAHE(inputImage, 4, Size(8, 8));
 	imshow("Display window1", modifiedImage);
@@ -29,8 +33,8 @@ int main(int argc, char** argv)
 	imshow("Display window1", modifiedImage);
 	waitKey(0);
 	
-	Mat greyscale = weightedGrayscale(modifiedImage);
-	Mat tmp = greyscale.clone();
+	Mat greyscale = weightedGrayscale(modifiedImage, 1);
+	//Mat tmp = greyscale.clone();
 	//GaussianBlur(tmp, greyscale, cv::Size(0, 0), 1);
 	//addWeighted(tmp, 1.5, greyscale, -0.5, 10, greyscale);
 
@@ -39,15 +43,14 @@ int main(int argc, char** argv)
 	imshow("Display window1", greyscale);
 	waitKey(0);
 
-	greyscale = erode(greyscale, 2);
+	//greyscale = erode(greyscale, 2);
 	//greyscale = dilate(greyscale, 5);
-
-
 	imshow("Display window1", greyscale);
 	waitKey(0);
 
 	//double treshold1 = 100;
 	//double treshold2 = 10;
+	//Mat edges;
 	//Canny(greyscale, edges, treshold1, treshold2, 5, true);
 	//imshow("Display window2", edges); // Show our image inside it.
 	//waitKey(0); // Wait for a keystroke in the window
@@ -74,7 +77,7 @@ int main(int argc, char** argv)
 	detector.detect(greyscale, keypoints);
 
 	drawKeypoints(greyscale, keypoints, greyscale, Scalar(0, 255, 255), DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
-	imshow("Display window2", greyscale);
+	imshow("Display window1", greyscale);
 	waitKey(0);
 
 	drawKeypoints(inputImage, keypoints, inputImage, Scalar(0, 255, 255), DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
@@ -85,6 +88,17 @@ int main(int argc, char** argv)
 	return 0;
 }
 
+
+/*
+Apply gaussian blur.
+@param filterArea - sizeX a sizeY must be ODD and >0 (greater than zero).
+*/
+Mat gaussianSmoothing(Mat bgrImage, Size filterArea, int sigmaX, int sigmaY) {
+	Mat result;
+	GaussianBlur(bgrImage, result, filterArea, sigmaX, sigmaY);
+
+	return result;
+}
 
 Mat equalizeCLAHE(Mat bgrImage, int clip) {
 	Mat labImage, bgrResult, tmp;
@@ -220,6 +234,22 @@ Mat weightedGrayscale(Mat inputImage) {
 	for (int y = 0; y < inputImage.rows; y++) {
 		for (int x = 0; x < inputImage.cols; x++) {
 			resultImage.at<uchar>(y, x) = (uchar) (inputImage.at<Vec3b>(y, x)[0] * 0.11 + inputImage.at<Vec3b>(y, x)[1] * 0.59 + inputImage.at<Vec3b>(y, x)[2] * 0.3);
+		}
+	}
+
+	return resultImage;
+}
+
+/*
+Convert BGR image to Grayscale image based on GREEN channel values ONLY!
+Green channel can be weighted if needed.
+*/
+Mat weightedGrayscale(Mat inputImage, float weight) {
+	Mat resultImage = Mat::zeros(inputImage.size(), CV_8UC1);
+
+	for (int y = 0; y < inputImage.rows; y++) {
+		for (int x = 0; x < inputImage.cols; x++) {
+			resultImage.at<uchar>(y, x) = (uchar)(inputImage.at<Vec3b>(y, x)[1] * weight);
 		}
 	}
 

@@ -18,6 +18,8 @@ using namespace std;
 
 Mat inputImage;
 
+Mat gaussianSmoothing(Mat bgrImage, Size filterArea, int sigmaX, int sigmaY);
+
 Mat modifySaturation(Mat inputImage, float alpha, int beta);
 
 Mat medianFilter(Mat inputImage);
@@ -27,6 +29,8 @@ Mat blurFilter(Mat inputImage, int kernelSizeX, int kernelSizeY);
 Mat getGreenChannel(Mat inputImage);
 
 Mat weightedGrayscale(Mat inputImage);
+
+Mat weightedGrayscale(Mat inputImage, float weight);
 
 Mat dilate(Mat inputImage, int iterations);
 
