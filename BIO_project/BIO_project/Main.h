@@ -37,3 +37,14 @@ Mat dilate(Mat inputImage, int iterations);
 Mat erode(Mat inputImage, int iterations);
 
 Mat equalizeCLAHE(Mat bgrImage, int clip, Size areaGridSize);
+
+/*
+opencv_highgui2413.lib
+opencv_highgui2413d.lib
+opencv_imgproc2413.lib
+opencv_imgproc2413d.lib
+opencv_features2d2413.lib
+opencv_features2d2413d.lib
+opencv_core2413.lib
+opencv_core2413d.lib
+*/

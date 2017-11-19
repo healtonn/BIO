@@ -72,9 +72,9 @@ int main(int argc, char** argv)
 	params.filterByInertia = true;
 	params.minInertiaRatio = 0.1f;
 
-	SimpleBlobDetector detector(params);
+	Ptr<SimpleBlobDetector> detector = SimpleBlobDetector::create(params);
 	std::vector<KeyPoint> keypoints;
-	detector.detect(greyscale, keypoints);
+	detector->detect(greyscale, keypoints);
 
 	drawKeypoints(greyscale, keypoints, greyscale, Scalar(0, 255, 255), DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
 	imshow("Display window1", greyscale);
