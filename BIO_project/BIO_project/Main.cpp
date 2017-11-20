@@ -24,21 +24,21 @@ int main(int argc, char** argv)
 	//imshow("Display window1", modifiedImage);
 	//waitKey(0);
 
-	int clip = 4;
-	int gridSize = 8;
+	int clip = 3;
+	int gridSize = 6;
 	Mat modifiedImage = equalizeCLAHE(inputImage, clip, Size(gridSize, gridSize));
 	//imshow("Display window1", modifiedImage);
 	//waitKey(0);
 
 	modifiedImage = getGreenChannel(modifiedImage);
-	float alpha = 2.0;
+	float alpha = 1.5;
 	int beta = 0;
 	modifiedImage = modifySaturation(modifiedImage, alpha, beta);
 	//imshow("Display window1", modifiedImage);
 	//waitKey(0);
 	
-	float weight = 0.7f;
-	Mat greyscale = weightedGrayscale(modifiedImage, weight);
+	//float weight = 0.7f;
+	Mat greyscale = weightedGrayscale(modifiedImage);
 	//Mat tmp = greyscale.clone();
 	//GaussianBlur(tmp, greyscale, cv::Size(0, 0), 1);
 	//addWeighted(tmp, 1.5, greyscale, -0.5, 10, greyscale);
@@ -271,7 +271,7 @@ float getStandardDeviation(Mat srcArray) {
 	Scalar result;
 	meanStdDev(srcArray, noArray(), result);
 
-	return result[0];
+	return (float) result[0];
 }
 
 Mat discreteFourier2D(Mat greyscaleImage) {
