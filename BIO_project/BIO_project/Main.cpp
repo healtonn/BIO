@@ -16,8 +16,8 @@ int main(int argc, char** argv)
 		return -1;
 	}
 
-	namedWindow("Input Image", WINDOW_AUTOSIZE);
-	imshow("Input Image", inputImage);
+	//namedWindow("Input Image", WINDOW_AUTOSIZE);
+	//imshow("Input Image", inputImage);
 	waitKey(0);
 
 	//Mat modifiedImage = gaussianSmoothing(inputImage, Size(25, 25), 3, 3);
@@ -27,15 +27,15 @@ int main(int argc, char** argv)
 	int clip = 4;
 	int gridSize = 8;
 	Mat modifiedImage = equalizeCLAHE(inputImage, clip, Size(gridSize, gridSize));
-	imshow("Display window1", modifiedImage);
-	waitKey(0);
+	//imshow("Display window1", modifiedImage);
+	//waitKey(0);
 
 	modifiedImage = getGreenChannel(modifiedImage);
-	float alpha = 1.5;
+	float alpha = 2.0;
 	int beta = 0;
 	modifiedImage = modifySaturation(modifiedImage, alpha, beta);
-	imshow("Display window1", modifiedImage);
-	waitKey(0);
+	//imshow("Display window1", modifiedImage);
+	//waitKey(0);
 	
 	float weight = 0.7f;
 	Mat greyscale = weightedGrayscale(modifiedImage, weight);
@@ -45,13 +45,13 @@ int main(int argc, char** argv)
 
 	int kernelSize = BLUR_KERNEL_SIZE;
 	greyscale = blurFilter(greyscale, kernelSize, kernelSize);
-	imshow("Display window1", greyscale);
-	waitKey(0);
+	//imshow("Display window1", greyscale);
+	//waitKey(0);
 
 	greyscale = erode(greyscale, 2);
-	//greyscale = dilate(greyscale, 5);
-	imshow("Display window1", greyscale);
-	waitKey(0);
+	greyscale = dilate(greyscale, 1); 
+	//imshow("Display window1", greyscale);
+	//waitKey(0);
 
 	//double treshold1 = 100;
 	//double treshold2 = 10;
@@ -63,30 +63,30 @@ int main(int argc, char** argv)
 	SimpleBlobDetector::Params params;
 
 	params.minThreshold = 10;
-	params.maxThreshold = 100;
+	params.maxThreshold = 80;
 
 	params.filterByArea = true;
 	params.minArea = 70.0f;
 
 	params.filterByCircularity = true;
-	params.minCircularity = 0.1f;
+	params.minCircularity = 0.01f;
 
 	params.filterByConvexity = true;
-	params.minConvexity = 0.1f;
+	params.minConvexity = 0.01f;
 
 	params.filterByInertia = true;
-	params.minInertiaRatio = 0.1f;
+	params.minInertiaRatio = 0.01f;
 
 	Ptr<SimpleBlobDetector> detector = SimpleBlobDetector::create(params);
 	std::vector<KeyPoint> keypoints;
 	detector->detect(greyscale, keypoints);
 
 	drawKeypoints(greyscale, keypoints, greyscale, Scalar(0, 255, 255), DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
-	imshow("Display window1", greyscale);
-	waitKey(0);
+	//imshow("Display window1", greyscale);
+	//waitKey(0);
 
 	drawKeypoints(inputImage, keypoints, inputImage, Scalar(0, 255, 255), DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
-	imshow("Display window1", inputImage);
+	imshow("Result", inputImage);
 	waitKey(0); // Wait for a keystroke in the window
 
 
