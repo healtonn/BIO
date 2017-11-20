@@ -18,7 +18,7 @@ int main(int argc, char** argv)
 
 	//namedWindow("Input Image", WINDOW_AUTOSIZE);
 	//imshow("Input Image", inputImage);
-	waitKey(0);
+	//waitKey(0);
 
 	//Mat modifiedImage = gaussianSmoothing(inputImage, Size(25, 25), 3, 3);
 	//imshow("Display window1", modifiedImage);
@@ -81,7 +81,7 @@ int main(int argc, char** argv)
 	std::vector<KeyPoint> keypoints;
 	detector->detect(greyscale, keypoints);
 
-	drawKeypoints(greyscale, keypoints, greyscale, Scalar(0, 255, 255), DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+	//drawKeypoints(greyscale, keypoints, greyscale, Scalar(0, 255, 255), DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
 	//imshow("Display window1", greyscale);
 	//waitKey(0);
 
