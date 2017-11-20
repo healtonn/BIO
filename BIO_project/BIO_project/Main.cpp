@@ -252,3 +252,31 @@ Mat weightedGrayscale(Mat inputImage, float weight) {
 
 	return resultImage;
 }
+
+Mat getHighPassFilter(Mat fourierCoefs, float sigma) {
+	Mat result = Mat::zeros(fourierCoefs.size(), CV_32FC1);
+	double exponent, H;
+	for (int x = 0; x < result.rows; x++) {
+		for (int y = 0; y < result.cols; y++) {
+			exponent = -((x ^ 2 + y ^ 2) / (2.0 * pow(sigma, 2)));
+			H = 1 - exp(exponent);
+			result.at<float>(x, y) = (float)H;
+		}
+	}
+
+	return result;
+}
+
+float getStandardDeviation(Mat srcArray) {
+	Scalar result;
+	meanStdDev(srcArray, noArray(), result);
+
+	return result[0];
+}
+
+Mat discreteFourier2D(Mat greyscaleImage) {
+	Mat result = Mat_<float>(greyscaleImage);
+	dft(result, result);
+
+	return result;
+}

@@ -23,14 +23,27 @@ Apply gaussian blur.
 */
 Mat gaussianSmoothing(Mat bgrImage, Size filterArea, int sigmaX, int sigmaY);
 
+/*
+Modify saturation of BGR or Grayscale image format.
+*/
 Mat modifySaturation(Mat inputImage, float alpha, int beta);
 
+/*
+Blur image using median filter method.
+*/
 Mat medianFilter(Mat inputImage);
 
+/*
+Blur image base on kernel size.
+*/
 Mat blurFilter(Mat inputImage, int kernelSizeX, int kernelSizeY);
 
+/*
+For BGR image set Blue and Red values to zero, so only Green channel remains.
+*/
 Mat getGreenChannel(Mat inputImage);
 
+/*Transform BGR*/
 Mat weightedGrayscale(Mat inputImage);
 
 /*
@@ -39,8 +52,35 @@ Green channel can be weighted if needed.
 */
 Mat weightedGrayscale(Mat inputImage, float weight);
 
+/*
+Dilate grayscale image.
+*/
 Mat dilate(Mat inputImage, int iterations);
 
+/*
+Erode grayscale image.
+*/
 Mat erode(Mat inputImage, int iterations);
 
+/*
+Contrast Limited Adaptive Histogram Equalization.
+Makes retinal image more balanced if some places are dark because of bad scanning.
+Also makes aneurysms more visible and contrasting with their surroundings.
+*/
 Mat equalizeCLAHE(Mat bgrImage, int clip, Size areaGridSize);
+
+/*
+High pass filter for image (apply to Fourier's coeficients).
+*/
+Mat getHighPassFilter(Mat fourierCoefs, float sigma);
+
+/*
+Count standard deviation in 1-channel array.
+*/
+float getStandardDeviation(Mat srcArray);
+
+/*
+Count discrete fourier transformation for grayscale image.
+Returns discrete fourier coeficients.
+*/
+Mat discreteFourier2D(Mat greyscaleImage);
